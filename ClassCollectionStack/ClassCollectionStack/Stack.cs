@@ -6,40 +6,60 @@ namespace ClassCollectionStack
     {
         private readonly List<string> _list = new();
 
-        public Stack(params string[] val)
+        public int Size
+        { 
+            get
+            {
+                return _list.Count;
+            }
+        }
+
+        public string? Top 
+        { 
+            get
+            {
+                if (_list.Count != 0)
+                 return _list.LastOrDefault();
+                return null;
+            }
+        } 
+
+        public Stack(params string[] elements)
         {
 
-            foreach (var item in val)
+            foreach (var item in elements)
             {
                 _list.Add(item);
             }
         }
-
+        public void Add(string elemment)
+        {
+            _list.Add(elemment);
+        }
         public string Pop()
         {
             string element;
-
-            if (Size > 0)
+            try
             {
-                element = _list[^1];
-                _list.Remove(_list[^1]);
+                if (Size > 0)
+                {
+                    element = _list[^1];
+                    _list.Remove(_list[^1]);
+                }
+                else
+                {
+                    throw new Exception("Стек пустой");
+                }
+                return element;
             }
-            else
+            catch(Exception e) 
             {
-                throw new Exception("Стек пустой");
+                Console.WriteLine(e);
             }
 
-            return element;
-        }
-
-        public void Add(string elem)
-        {
-            _list.Add(elem);
-        }
-
-        public int Size => _list.Count;
-
-        public string Top => _list.LastOrDefault();
+            return "Стек пустой";
+           
+        }   
 
         public static Stack Concat(params Stack[] stacks)
         {
@@ -59,7 +79,13 @@ namespace ClassCollectionStack
 
         public IEnumerator GetEnumerator()
         {
-            return _list.GetEnumerator();
+            return ((IEnumerable)_list).GetEnumerator();
+        }
+
+        private class StackItem
+        {
+            private readonly Stack _stack;
+
         }
     }
 }
